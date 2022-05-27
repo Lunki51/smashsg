@@ -1,10 +1,13 @@
 const fastify = require('fastify')
+const fs = require('fs');
 const app = fastify();
 
 
 
 app.get("/",async(req,reply)=>{
-    return
+    const stream = fs.createReadStream('./index.html')
+    reply.type('text/html');
+    reply.send(stream);
 })
 
 
