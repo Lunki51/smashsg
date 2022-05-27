@@ -1,0 +1,165 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        const width = 500;
+        const height = 500;
+
+
+
+
+        function draw(){
+            let status = [0,0,0,0,0,0]
+            const canvas = document.getElementById("canvas")
+
+            if (canvas.getContext) {
+                const ctx = canvas.getContext("2d");
+                fillStatus(width/2,height/2,width/2,ctx,status)
+                drawHexagon(width/2,height/2,width/2,ctx)
+
+            }
+
+            canvas.addEventListener("mousedown", function(e)
+            {
+                let pos = getMousePosition(canvas, e);
+
+                updateCollideHexa(width/2,height/2,width/2,pos,status)
+                if (canvas.getContext) {
+                    const ctx = canvas.getContext("2d")
+                    ctx.clearRect(0,0,width,height);
+                    fillStatus(width/2,height/2,width/2,ctx,status)
+                    drawHexagon(width/2,height/2,width/2,ctx)
+                }
+            });
+
+
+        }
+
+        function updateCollideHexa(x,y,r,pos,status){
+            const a = 2 * Math.PI / 6;
+            for(let i =0;i<6;i+=1){
+                let j = i+1;
+                if(j==6)j=0;
+
+                let pts1 = [x + r * Math.sin(a * i), y + r * Math.cos(a * i),0]
+                let pts2 = [x + r * Math.sin(a * j), y + r * Math.cos(a * j),0]
+                let pts3 = [x,y,0]
+                if(PointInTriangle([pos[0],pos[1],0],pts1,pts2,pts3)){
+                    status[i] = inc(status[i])
+                }
+            }
+        }
+
+        function SameSide(v1,v2,A,B){
+            let p1A = [v1[0]-A[0],v1[1]-A[1],0]
+            let p2A = [v2[0]-A[0],v2[1]-A[1],0]
+            let BA = [B[0]-A[0],B[1]-A[1],0]
+            let cp1 = cross(BA,p1A)
+            let cp2 = cross(BA,p2A)
+            return dot(cp1,cp2) >=0;
+        }
+
+        function dot(A,B){
+            return (A[0] * B[0]) + (A[1] * B[1]) + (A[2] * B[2])
+        }
+
+        function cross(A,B){
+            return [0, 0, A[0] * B[1] - A[1] * B[0]]
+        }
+
+        function PointInTriangle(v1,A,B,C){
+            return SameSide(v1,A,B,C) && SameSide(v1,B,A,C) && SameSide(v1,C,A,B)
+        }
+
+        function inc(r){
+            if(r<5){
+                r++
+            }else{
+                r=0;
+            }
+            return r;
+        }
+
+        function fillStatus(x,y,r,ctx,status){
+            console.log(status)
+            const a = 2 * Math.PI / 6;
+
+            for(let i =0;i<6;i+=1){
+                let j = i+1;
+                if(j==6)j=0;
+                ctx.beginPath();
+                ctx.fillStyle = getColor(status[i]);
+                let r2 =(status[i]+1)/6
+                ctx.lineTo(x + r * r2 * Math.sin(a * i), y + r * r2 * Math.cos(a * i));
+                ctx.lineTo(x +  r * r2 * Math.sin(a * j), y +  r * r2 * Math.cos(a * j));
+                ctx.lineTo(x,y);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+
+        }
+
+        function getColor(value){
+            switch (value){
+                case 0:
+                    return '#DD2C00';
+                case 1:
+                    return '#E65100';
+                case 2:
+                    return '#FDD835';
+                case 3:
+                    return '#C6FF00';
+                case 4:
+                    return '#76FF03';
+                case 5:
+                    return '#388E3C';
+
+            }
+        }
+
+        function drawHexagon(x, y,r,ctx) {
+            const a = 2 * Math.PI / 6;
+            for(var minus=0;minus<=6;minus++){
+                ctx.beginPath();
+                for (var i = 0; i <= 6; i++) {
+                    ctx.lineTo(x + ((r*minus)/6) * Math.sin(a * i), y + ((r*minus)/6) * Math.cos(a * i));
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+            ctx.beginPath();
+            ctx.moveTo(x + r * Math.sin(a * 0), y + r * Math.cos(a * 0))
+            ctx.lineTo(x + r * Math.sin(a * 3), y + r * Math.cos(a * 3))
+
+            ctx.moveTo(x + r * Math.sin(a * 1), y + r * Math.cos(a * 1))
+            ctx.lineTo(x + r * Math.sin(a * 4), y + r * Math.cos(a * 4))
+
+            ctx.moveTo(x + r * Math.sin(a * 5), y + r * Math.cos(a * 5))
+            ctx.lineTo(x + r * Math.sin(a * 2), y + r * Math.cos(a * 2))
+
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function getMousePosition(canvas, event) {
+            let rect = canvas.getBoundingClientRect();
+            let x = event.clientX - rect.left;
+            let y = event.clientY - rect.top;
+            return [x,y]
+        }
+
+
+    </script>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onload="draw()">
+<div id="smashsg">
+    <p>SMASH SG</p>
+    <canvas id="canvas" width="500" height="500"/>
+</div>
+
+</body>
+
+</html>

@@ -1,13 +1,15 @@
 const fastify = require('fastify')
 const fs = require('fs');
+const path = require('path')
 const app = fastify();
 
+app.register(require('@fastify/static'), {
+    root: path.join(__dirname, 'public')
+})
 
 
 app.get("/",async(req,reply)=>{
-    const stream = fs.createReadStream('./index.html')
-    reply.type('text/html');
-    reply.send(stream);
+    reply.sendFile('./index.html');
 })
 
 
