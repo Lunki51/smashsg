@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/static": "^5.0.0",
+    "axios": "^0.27.2",
     "fastify": "^3.29.0",
     "math.js": "^1.1.46"
   }

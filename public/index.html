@@ -2,8 +2,8 @@
 
 <head>
     <script type="text/javascript">
-        const width = 500;
-        const height = 500;
+        const width = 600;
+        const height = 600;
 
 
 
@@ -14,24 +14,47 @@
 
             if (canvas.getContext) {
                 const ctx = canvas.getContext("2d");
-                fillStatus(width/2,height/2,width/2,ctx,status)
-                drawHexagon(width/2,height/2,width/2,ctx)
-
+                fillStatus(width/2,height/2,250,ctx,status)
+                drawHexagon(width/2,height/2,250,ctx)
+                drawText(225,ctx)
             }
 
             canvas.addEventListener("mousedown", function(e)
             {
                 let pos = getMousePosition(canvas, e);
 
-                updateCollideHexa(width/2,height/2,width/2,pos,status)
+                updateCollideHexa(width/2,height/2,250,pos,status)
                 if (canvas.getContext) {
                     const ctx = canvas.getContext("2d")
                     ctx.clearRect(0,0,width,height);
-                    fillStatus(width/2,height/2,width/2,ctx,status)
-                    drawHexagon(width/2,height/2,width/2,ctx)
+                    fillStatus(width/2,height/2,250,ctx,status)
+                    drawHexagon(width/2,height/2,250,ctx)
+                    drawText(225,ctx)
                 }
             });
 
+
+        }
+
+        function drawText(r,ctx){
+            ctx.rotate(90  *Math.PI/180)
+            ctx.translate(width/2, -height/2)
+            ctx.textAlign = 'center';
+            ctx.fillStyle = "#000000"
+            ctx.font = "40px serif"
+            ctx.fillText("Neutral",0,-r);
+            ctx.rotate(60*Math.PI/180)
+            ctx.fillText("Patience",0,-r);
+            ctx.rotate(60*Math.PI/180)
+            ctx.fillText("Disadvantage",0,-r);
+            ctx.rotate(60*Math.PI/180)
+            ctx.fillText("Adaption",0,-r);
+            ctx.rotate(60*Math.PI/180)
+            ctx.fillText("Ledgetrap",0,-r);
+            ctx.rotate(60*Math.PI/180)
+            ctx.fillText("Advantage",0,-r);
+
+            ctx.resetTransform()
 
         }
 
@@ -107,7 +130,7 @@
                 case 1:
                     return '#E65100';
                 case 2:
-                    return '#FDD835';
+                    return '#ffdc2b';
                 case 3:
                     return '#C6FF00';
                 case 4:
@@ -149,15 +172,46 @@
             return [x,y]
         }
 
+        function share(){
+            let canvas = document.getElementById("canvas")
 
+        }
+
+        function download(){
+            let link = document.createElement("a");
+            let canvas = document.getElementById("canvas")
+
+            link.download = "smashsg.png";
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            delete link;
+        }
     </script>
     <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" sizes="64x64" href="images/logo.png">
+    <title>Smash SG</title>
 </head>
 
 <body onload="draw()">
 <div id="smashsg">
-    <p>SMASH SG</p>
-    <canvas id="canvas" width="500" height="500"/>
+    <div>
+        <img src="images/smashsg_logo.png" id="logo"/>
+    </div>
+
+    <canvas id="canvas" width="600" height="600"></canvas>
+</div>
+<div class="buttons">
+    <button onclick="download()" id="download">DOWNLOAD</button>
+</div>
+
+<div id="sponso">
+    <p>Powered by </p>
+    <a  href="/poc'han">
+        <img src="images/poc'han_logo.png" id="poc_logo"/>
+    </a>
+
 </div>
 
 </body>

@@ -1,4 +1,42 @@
-#smashsg{
+#smashsg {
     display: block;
     text-align: center;
+
+}
+
+#title{
+    font-family: 'serif';
+    font-size: 50px;
+    margin: 0;
+}
+
+.buttons{
+    display: block;
+    text-align: center;
+
+
+}
+
+#download{
+    background-color: #424242; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#logo{
+    max-width: 700px;
+}
+
+#poc_logo{
+    max-width: 200px;
+}
+#sponso{
+    position: absolute;
+    right: 0;
+    transform: translateY(-100%);
 }
