@@ -13,9 +13,10 @@ app.get("/",async(req,reply)=>{
 })
 
 app.get("/poc'han",async(req,reply)=>{
-    reply.send("Donnez de l'argent a poc'han svp")
+    reply.send("Donnez de l'argent a poc'han svp\n" +
+        "https://discord.gg/KWcSGkvJd8")
 })
 
 
 
-app.listen(4015,"0.0.0.0")
+app.listen(3000,"0.0.0.0")
